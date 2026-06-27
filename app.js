@@ -346,6 +346,85 @@ const STAT_LABELS = {
   peace: "Bình An",
   hope: "Hy Vọng",
 };
+const VALID_WAO_CODES = new Set([
+  "LAUREL2005",
+  "LAUREL102",
+  "LAURELA1",
+  "LAURELK23",
+  "LAUREL27",
+  "LAUREL7D",
+  "LAUREL4E",
+  "LAUREL3F",
+  "LAUREL6G",
+  "LAUREL1H",
+
+  "1KLAUREL",
+  "9MLAUREL",
+  "5NLAUREL",
+  "8PLAUREL",
+  "2QLAUREL",
+  "7RLAUREL",
+  "4SLAUREL",
+  "6TLAUREL",
+  "3VLAUREL",
+  "0WLAUREL",
+
+  "XLAUREL9",
+  "YLAUREL2",
+  "ZLAUREL5",
+  "KLAUREL7",
+  "DLAUREL4",
+
+  "WAO1A2B3",
+  "WAO9X8Y7",
+  "WAO4C5D6",
+  "WAO7E8F9",
+  "WAO2G3H4",
+  "WAO5J6K7",
+  "WAO8M9N0",
+  "WAO3P4Q5",
+  "WAO6R7S8",
+  "WAO1T2V3",
+
+  "1A2BWAO3",
+  "9X8YWAO7",
+  "4C5DWAO6",
+  "7E8FWAO9",
+  "2G3HWAO4",
+  "5J6KWAO7",
+  "8M9NWAO0",
+  "3P4QWAO5",
+  "6R7SWAO8",
+  "1T2VWAO3",
+
+  "A1WAO2B3",
+  "X9WAO8Y7",
+  "C4WAO5D6",
+  "E7WAO8F9",
+  "G2WAO3H4",
+
+  // Mã ảo để test
+  "WAOTEST01",
+]);
+const USED_WAO_CODES_KEY = "waoUsedCodes";
+
+const getUsedWaoCodes = () => {
+  try {
+    const savedCodes = localStorage.getItem(USED_WAO_CODES_KEY);
+    return savedCodes ? JSON.parse(savedCodes) : [];
+  } catch (error) {
+    return [];
+  }
+};
+
+const saveUsedWaoCode = (code) => {
+  const usedCodes = getUsedWaoCodes();
+
+  if (!usedCodes.includes(code)) {
+    usedCodes.push(code);
+    localStorage.setItem(USED_WAO_CODES_KEY, JSON.stringify(usedCodes));
+  }
+};
 // --- SHARED UI COMPONENTS ---
 
 const Button = ({
@@ -377,7 +456,7 @@ const Button = ({
 };
 
 const Logo = ({ onHome }) => (
-  <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
+  <div className="fixed top-1 left-1/2 -translate-x-1/2 z-50">
     <motion.button
       type="button"
       initial={{ opacity: 0, y: -20 }}
@@ -385,15 +464,14 @@ const Logo = ({ onHome }) => (
       whileHover={{ scale: 1.06 }}
       whileTap={{ scale: 0.96 }}
       onClick={onHome}
-      className="flex flex-col items-center cursor-pointer bg-transparent border-0 p-0 text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/70 focus-visible:ring-offset-4 focus-visible:ring-offset-cosmic rounded-xl"
+      className="flex items-center justify-center cursor-pointer bg-transparent border-0 p-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/70 focus-visible:ring-offset-4 focus-visible:ring-offset-cosmic rounded-xl"
       aria-label="Về trang chính WAO"
     >
-      <div className="text-2xl font-serif font-bold text-gold tracking-widest uppercase leading-none">
-        WAO
-      </div>
-      <div className="mt-1 text-[10px] tracking-[0.3em] text-white/70 uppercase">
-        Tea Coffee
-      </div>
+      <img
+        src="./images/logo.png"
+        alt="WAO Tea Coffee"
+        className="w-[110px] md:w-[140px] h-auto object-contain drop-shadow-[0_0_18px_rgba(220,152,42,0.35)]"
+      />
     </motion.button>
   </div>
 );
@@ -417,7 +495,7 @@ const JourneySteps = () => {
         transition={{ duration: 0.7 }}
         className="text-4xl md:text-5xl font-serif font-bold text-center text-gold mb-14 drop-shadow-[0_0_18px_rgba(220,152,42,0.25)]"
       >
-        Hành Trình Đến Với Thông Điệp
+        Hành Trình Đến Với Vũ Trụ WAO
       </motion.h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
@@ -532,11 +610,34 @@ const FormView = ({ onNext }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.dob || !formData.code) {
+
+    const normalizedCode = formData.code.trim().toUpperCase();
+    const usedCodes = getUsedWaoCodes();
+
+    if (!formData.name.trim() || !formData.dob || !normalizedCode) {
       setError("Vui lòng điền đầy đủ thông tin để kết nối Vũ Trụ.");
       return;
     }
-    onNext(formData);
+
+    if (!VALID_WAO_CODES.has(normalizedCode)) {
+      setError("Mã WAO không hợp lệ. Vui lòng kiểm tra lại mã trên bao bì.");
+      return;
+    }
+
+    if (usedCodes.includes(normalizedCode)) {
+      setError("Mã WAO này đã được sử dụng. Vui lòng dùng mã khác.");
+      return;
+    }
+
+    saveUsedWaoCode(normalizedCode);
+
+    setError("");
+
+    onNext({
+      ...formData,
+      name: formData.name.trim(),
+      code: normalizedCode,
+    });
   };
 
   return (
@@ -545,7 +646,7 @@ const FormView = ({ onNext }) => {
       initial={{ opacity: 0, x: 50 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -50 }}
-      className="flex flex-col items-center justify-center min-h-screen px-4 w-full relative z-10"
+      className="flex flex-col items-center justify-center min-h-screen px-4 pt-20 pb-8 w-full relative z-10"
     >
       <div className="glass-panel p-8 md:p-12 rounded-3xl w-full max-w-md shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold to-transparent opacity-50"></div>
@@ -734,6 +835,35 @@ const EnergyInsight = ({ cardId }) => {
     </motion.div>
   );
 };
+
+const WaoInfoCard = () => {
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.35 }}
+      transition={{ duration: 0.7 }}
+      className="w-full glass-panel rounded-3xl p-6 md:p-8 border border-gold/15 overflow-hidden relative"
+    >
+      <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-gold/10 blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-24 -left-24 w-64 h-64 rounded-full bg-teagreen/10 blur-3xl pointer-events-none" />
+
+      <div className="relative z-10 max-w-4xl mx-auto text-center">
+        <h1 className="text-xl md:text-2xl lg:text-3xl font-serif text-gold font-bold mb-4 drop-shadow-[0_0_18px_rgba(220,152,42,0.25)]">
+          Có thể bạn chưa biết về WAO
+        </h1>
+
+        <p className="text-white/75 text-xs md:text-sm leading-relaxed">
+          Là nhà cung cấp nguyên liệu cho hơn 8.000 đối tác F&amp;B lớn, nhờ sở
+          hữu nhà máy 6.000m2 đạt chuẩn quốc tế (FDA, ISO) <br />
+          và công nghệ chiết xuất độc quyền, WAO luôn giữ trọn vẹn &quot;hậu vị
+          Umami&quot; nguyên bản từ lá trà thật.
+        </p>
+      </div>
+    </motion.section>
+  );
+};
+
 const TarotCard = ({ cardData, isFlipped, isSpecial }) => {
   const Icon = cardData.group.icon;
 
@@ -976,8 +1106,9 @@ const RevealResultView = ({ cardData, userData, onCollection }) => {
       </div>
 
       {showDetails && (
-        <div className="w-full max-w-6xl">
+        <div className="w-full max-w-6xl space-y-8">
           <EnergyInsight cardId={cardData.id} />
+          <WaoInfoCard />
         </div>
       )}
     </div>
@@ -1022,35 +1153,64 @@ const CollectionView = ({ collectedIds, totalCards, onBack }) => {
             <motion.div
               key={card.id}
               whileHover={isUnlocked ? { scale: 1.05, y: -5 } : {}}
-              className={`relative aspect-[2/3] rounded-xl border flex flex-col items-center justify-center p-4 transition-all ${
+              className={`group relative aspect-[2/3] rounded-xl border overflow-hidden transition-all ${
                 isUnlocked
                   ? "bg-[#0a182c] border-gold/50 shadow-[0_4px_20px_rgba(220,152,42,0.15)] cursor-pointer"
                   : "bg-white/5 border-white/10 opacity-50 grayscale"
               }`}
             >
-              {isUnlocked ? (
-                <>
-                  <Icon
-                    className={`w-8 h-8 mb-4 ${card.id === 10 ? "text-white" : "text-gold"}`}
-                  />
-                  <h3
-                    className={`font-serif text-center font-bold ${card.id === 10 ? "text-transparent bg-clip-text bg-gradient-to-r from-gold to-white" : "text-gold"}`}
-                  >
-                    {card.name}
-                  </h3>
-                  <p className="text-[10px] text-white/50 text-center mt-2 uppercase">
-                    {card.group.name}
-                  </p>
-                </>
-              ) : (
-                <>
-                  <div className="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center mb-2">
-                    <Icons.Share2 className="w-5 h-5 text-white/30" />{" "}
-                    {/* Dùng icon share tạm thay ổ khóa */}
-                  </div>
-                  <span className="text-xs text-white/40">Chưa mở khóa</span>
-                </>
+              {isUnlocked && card.image && (
+                <img
+                  src={card.image}
+                  alt={card.name}
+                  className="absolute inset-0 w-full h-full object-cover brightness-[1.08] saturate-110"
+                />
               )}
+
+              <div
+                className={`absolute inset-0 ${
+                  isUnlocked
+                    ? "bg-gradient-to-b from-[#061324]/10 via-[#061324]/25 to-[#061324]/85"
+                    : "bg-[#061324]/90"
+                }`}
+              />
+
+              <div className="relative z-10 h-full flex flex-col items-center justify-center text-center p-4">
+                {isUnlocked ? (
+                  <>
+                    {!card.image && (
+                      <Icon
+                        className={`w-8 h-8 mb-4 ${
+                          card.id === 10 ? "text-white" : "text-gold"
+                        }`}
+                      />
+                    )}
+
+                    <div className={card.image ? "mt-auto mb-3" : ""}>
+                      <h3
+                        className={`font-serif text-center font-bold drop-shadow-[0_3px_8px_rgba(0,0,0,0.9)] ${
+                          card.id === 10
+                            ? "text-transparent bg-clip-text bg-gradient-to-r from-gold to-white"
+                            : "text-gold"
+                        }`}
+                      >
+                        {card.name}
+                      </h3>
+
+                      <p className="text-[10px] text-white/70 text-center mt-2 uppercase font-semibold tracking-wider drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+                        {card.group.name}
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center mb-2">
+                      <Icons.Share2 className="w-5 h-5 text-white/30" />
+                    </div>
+                    <span className="text-xs text-white/40">Chưa mở khóa</span>
+                  </>
+                )}
+              </div>
             </motion.div>
           );
         })}

@@ -323,6 +323,47 @@ const CARDS_DATA = [
     action: "Mỉm cười thật tươi trước gương, bạn đang ở phiên bản rực rỡ nhất!",
   },
 ];
+
+const getWeightedRandomCard = (collectedIds = []) => {
+  const cardsWithWeight = CARDS_DATA.map((card) => {
+    const isCollected = collectedIds.includes(card.id);
+
+    let weight = 10;
+
+    // Thẻ đã mở rồi thì giảm xác suất xuất hiện lại
+    if (isCollected) {
+      weight = 2;
+    }
+
+    // Thẻ đặc biệt số 10 hiếm hơn
+    if (card.id === 10) {
+      weight = isCollected ? 1 : 3;
+    }
+
+    return {
+      card,
+      weight,
+    };
+  });
+
+  const totalWeight = cardsWithWeight.reduce(
+    (sum, item) => sum + item.weight,
+    0,
+  );
+
+  let random = Math.random() * totalWeight;
+
+  for (const item of cardsWithWeight) {
+    random -= item.weight;
+
+    if (random <= 0) {
+      return item.card;
+    }
+  }
+
+  return CARDS_DATA[0];
+};
+
 const CARD_STATS = {
   1: { motivation: 82, focus: 76, creativity: 88, peace: 70, hope: 92 },
   2: { motivation: 90, focus: 72, creativity: 96, peace: 68, hope: 88 },
@@ -1254,14 +1295,7 @@ const App = () => {
     }
 
     if (!drawnCard) {
-      const isLucky = Math.random() > 0.9;
-
-      if (isLucky) {
-        drawnCard = CARDS_DATA.find((c) => c.id === 10);
-      } else {
-        const normalCards = CARDS_DATA.filter((c) => c.id !== 10);
-        drawnCard = normalCards[Math.floor(Math.random() * normalCards.length)];
-      }
+      drawnCard = getWeightedRandomCard(collection);
     }
 
     setCurrentCard(drawnCard);

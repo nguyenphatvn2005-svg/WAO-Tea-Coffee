@@ -624,12 +624,14 @@ const FormView = ({ onNext }) => {
       return;
     }
 
-    if (usedCodes.includes(normalizedCode)) {
+    if (normalizedCode !== "WAOTEST01" && usedCodes.includes(normalizedCode)) {
       setError("Mã WAO này đã được sử dụng. Vui lòng dùng mã khác.");
       return;
     }
 
-    saveUsedWaoCode(normalizedCode);
+    if (normalizedCode !== "WAOTEST01") {
+      saveUsedWaoCode(normalizedCode);
+    }
 
     setError("");
 

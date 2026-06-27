@@ -229,6 +229,7 @@ const CARDS_DATA = [
     id: 2,
     name: "Cảm Hứng",
     group: GROUPS.FOUNDER,
+    image: "./images/2.png",
     meaning: "Ngọn lửa nhiệt huyết bên trong bạn.",
     message:
       "Vũ trụ đang gửi đến bạn một luồng ánh sáng mới. Đừng ngần ngại theo đuổi những ý tưởng có vẻ điên rồ lướt qua tâm trí bạn hôm nay.",
@@ -239,6 +240,7 @@ const CARDS_DATA = [
     id: 3,
     name: "Định Hướng",
     group: GROUPS.FOUNDER,
+    image: "./images/3.png",
     meaning: "Kim chỉ nam cho hành trình dài.",
     message:
       "Đôi khi chậm lại là cách nhanh nhất để tiến lên. Sự rõ ràng trong tâm trí bạn lúc này quý giá hơn tốc độ.",
@@ -249,6 +251,7 @@ const CARDS_DATA = [
     id: 4,
     name: "Phát Triển",
     group: GROUPS.TREE,
+    image: "./images/4.png",
     meaning: "Sự vươn lên mạnh mẽ và tự nhiên.",
     message:
       "Như cây Shan Tuyết bám rễ sâu vào sỏi đá, những khó khăn hiện tại chỉ đang giúp bạn vững vàng hơn trong tương lai.",
@@ -259,6 +262,7 @@ const CARDS_DATA = [
     id: 5,
     name: "Cân Bằng",
     group: GROUPS.TREE,
+    image: "./images/5.png",
     meaning: "Trạng thái hài hòa giữa cho và nhận.",
     message:
       "Bạn đã nỗ lực rất nhiều. Hôm nay, Vũ trụ khuyên bạn hãy ưu tiên nạp lại năng lượng cho bản thân.",
@@ -269,6 +273,7 @@ const CARDS_DATA = [
     id: 6,
     name: "Lắng Nghe",
     group: GROUPS.TREE,
+    image: "./images/6.png",
     meaning: "Thấu hiểu bản thân và thế giới xung quanh.",
     message:
       "Câu trả lời bạn tìm kiếm bấy lâu nay đã có sẵn bên trong bạn. Hãy để không gian tĩnh lặng giúp bạn nghe thấy nó.",
@@ -279,6 +284,7 @@ const CARDS_DATA = [
     id: 7,
     name: "Kết Nối",
     group: GROUPS.FARMER,
+    image: "./images/7.png",
     meaning: "Sợi dây liên kết giữa người với người.",
     message:
       "Một cuộc gặp gỡ ngẫu nhiên hoặc một dòng tin nhắn hôm nay có thể mang lại cho bạn những cơ hội bất ngờ.",
@@ -289,7 +295,7 @@ const CARDS_DATA = [
     id: 8,
     name: "Bứt Phá",
     group: GROUPS.FARMER,
-    image: "./images/tree.jpg",
+    image: "./images/8.png",
     meaning: "Vượt qua giới hạn an toàn.",
     message:
       "Đã đến lúc bước ra khỏi vùng an toàn. Bạn có đủ năng lực để làm những điều lớn lao hơn bạn nghĩ.",
@@ -299,6 +305,7 @@ const CARDS_DATA = [
     id: 9,
     name: "Dám Bước",
     group: GROUPS.FARMER,
+    image: "./images/9.png",
     meaning: "Hành động bất chấp nỗi sợ.",
     message:
       "Sự hoàn hảo là kẻ thù của hành động. Hãy cứ làm, sai và sửa. Quan trọng là bạn dám bắt đầu.",
@@ -309,6 +316,7 @@ const CARDS_DATA = [
     id: 10,
     name: "NIỀM TIN",
     group: GROUPS.SPECIAL,
+    image: "./images/10.png",
     meaning: "Khởi đầu + Nội lực + Hành động",
     message:
       "Bạn đang sở hữu lá bài hiếm nhất của Vũ Trụ WAO. Mọi yếu tố thiên thời, địa lợi, nhân hòa đang hội tụ. Hãy tin tưởng tuyệt đối vào bản thân.",

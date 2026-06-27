@@ -1,32 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vũ Trụ WAO - WAO Tea Coffee</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div id="cosmic-bg" class="cosmic-bg" aria-hidden="true">
-    <div class="radial-layer"></div>
-    <div id="star-layer" class="star-layer"></div>
-    <div id="leaf-layer" class="star-layer"></div>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>VŨ TRỤ WAO | Ngày Một Vị, Ngày Một Vui</title>
 
-  <nav class="navbar">
-    <button id="logo-btn" class="logo-btn" type="button" aria-label="Về trang đầu">
-      <span class="icon-small">🍃</span>
-      WAO
-    </button>
-    <button id="restart-btn" class="restart-btn hidden" type="button">Bắt Đầu Lại</button>
-  </nav>
+    <!-- Google Fonts: Inter cho text, Playfair Display cho tiêu đề cao cấp -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap"
+      rel="stylesheet"
+    />
 
-  <main id="app" class="app"></main>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.config.js"></script>
 
-  <footer id="footer" class="footer">
-    <p>© 2026 WAO Tea Coffee. Phiên bản thử nghiệm.</p>
-  </footer>
+    <!-- CSS riêng của dự án -->
+    <link rel="stylesheet" href="style.css" />
 
-  <script src="script.js" defer></script>
-</body>
+    <!-- React, ReactDOM, Babel, and Framer Motion via CDN -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.production.min.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  </head>
+
+  <body>
+    <div id="canvas-container">
+      <canvas id="cosmic-canvas"></canvas>
+    </div>
+
+    <div id="root"></div>
+
+    <!-- JS nền vũ trụ -->
+    <script src="canvas.js"></script>
+
+    <!-- React app: dùng Babel để chạy JSX trực tiếp trên GitHub Pages -->
+    <script type="text/babel" src="app.js"></script>
+  </body>
 </html>

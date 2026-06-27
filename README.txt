@@ -1,15 +1,24 @@
-WAO Tea Optimized
+CẤU TRÚC FILE VŨ TRỤ WAO
 
-Các thay đổi chính:
-- Giảm số lượng sao từ 150 xuống 80 trên desktop, 36 trên mobile/máy yếu.
-- Giảm số lượng lá bay từ 15 xuống 6 trên desktop, tắt lá bay trên mobile/máy yếu.
-- Tự bật chế độ nhẹ khi màn hình nhỏ, thiết bị cảm ứng hoặc trình duyệt bật Reduce Motion.
-- Tắt/pause animation khi người dùng chuyển sang tab khác.
-- Giảm backdrop-filter blur từ 16px xuống 8px, tắt blur ở chế độ nhẹ.
-- Giảm drop-shadow, box-shadow và animation gradient nặng.
-- Thêm defer cho script để HTML tải nhẹ hơn.
+index.html
+- Khung HTML chính.
+- Nạp Google Fonts, Tailwind, React, Framer Motion.
+- Gọi các file style.css, tailwind.config.js, canvas.js, app.js.
 
-Cách dùng:
-1. Giải nén thư mục.
-2. Mở index.html bằng trình duyệt.
-3. Khi up lên GitHub Pages, giữ nguyên 3 file index.html, style.css, script.js trong cùng thư mục.
+style.css
+- CSS riêng của dự án.
+- Chứa nền, scrollbar, glass panel, class 3D card.
+
+tailwind.config.js
+- Cấu hình màu sắc, font, shadow, animation cho Tailwind CDN.
+
+canvas.js
+- Hiệu ứng nền vũ trụ: sao, lá trà, sao băng.
+
+app.js
+- Toàn bộ giao diện React: logo, hero, form, loading, thẻ bài, bộ sưu tập.
+
+LƯU Ý
+- Khi chạy trên máy, nên mở bằng Live Server trong VS Code.
+- Khi up GitHub Pages, cần giữ tên file là index.html.
+- Đừng đổi tên các file .js/.css nếu chưa sửa lại đường dẫn trong index.html.
